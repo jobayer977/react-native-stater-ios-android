@@ -1,3 +1,5 @@
+Scalable React Native Project Stater Kit in TypeScript and Redux and Query Networking
+
 ## Features
 
 - Splash Screen
