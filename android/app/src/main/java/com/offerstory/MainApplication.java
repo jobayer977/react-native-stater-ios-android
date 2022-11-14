@@ -1,5 +1,4 @@
 package com.offerstory;
-
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -12,34 +11,31 @@ import com.facebook.soloader.SoLoader;
 import com.offerstory.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+// import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage; // <--- import
+import com.reactnativerestart.RestartPackage;  // <--- Import
 public class MainApplication extends Application implements ReactApplication {
-
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
         }
-
         @Override
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
+          // packages.add(new RestartPackage());
           return packages;
         }
-
         @Override
         protected String getJSMainModuleName() {
           return "index";
         }
       };
-
   private final ReactNativeHost mNewArchitectureNativeHost =
       new MainApplicationReactNativeHost(this);
-
   @Override
   public ReactNativeHost getReactNativeHost() {
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
@@ -48,7 +44,6 @@ public class MainApplication extends Application implements ReactApplication {
       return mReactNativeHost;
     }
   }
-
   @Override
   public void onCreate() {
     super.onCreate();
@@ -57,7 +52,6 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
-
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
