@@ -9,11 +9,6 @@ import {
 } from "react-native";
 import { LightColor, PrimaryColor, WhiteColor } from "../lib/color-manager";
 import React, { useState } from "react";
-import {
-  selectAppLanguage,
-  setAppFontFamily,
-  setAppLanguage,
-} from "../redux/SplashScreenReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Icon } from "@ui-kitten/components";
@@ -23,8 +18,9 @@ import SafeView from "../components/SafeView";
 import { createStructuredSelector } from "reselect";
 import { getFontNameType } from "../lib/font-names";
 import { localizedStrings } from "../lib/LocalizationStrings";
-import { setLocalDate } from "../lib/app_prefs";
+import { selectAppLanguage } from "../redux/SplashScreenReducer";
 import { useNavigation } from "@react-navigation/native";
+
 const languages = [
   {
     languageName: "English",
@@ -64,7 +60,6 @@ const SplashScreen = () => {
             style={[
               styles.langName,
               {
-                fontFamily: getFontNameType("Inter", "Regular"),
                 color:
                   appLanguage === item.languageName ? PrimaryColor : LightColor,
               },
@@ -98,8 +93,8 @@ const SplashScreen = () => {
               style={[
                 styles.title,
                 {
-                  fontFamily: getFontNameType("Inter", "Black"),
                   marginBottom: 15,
+                  fontFamily: getFontNameType("Inter", "Bold"),
                 },
               ]}
             >
@@ -139,7 +134,6 @@ const SplashScreen = () => {
             style={[
               styles.title,
               {
-                fontFamily: getFontNameType("Inter", "Black"),
                 color: WhiteColor,
               },
             ]}
@@ -190,7 +184,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     color: "#333E63",
-    fontWeight: "bold",
   },
   description: {
     fontSize: 14,
