@@ -11,6 +11,7 @@ import { LightColor, PrimaryColor, WhiteColor } from "../lib/color-manager";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Icon } from "@ui-kitten/components";
 import { ImageAssets } from "../lib/assets-managers";
 import LoaderAnimation from "../components/LoaderAnimation";
@@ -100,6 +101,7 @@ const SplashScreen = () => {
             >
               Choose Language
             </Text>
+            <FontAwesome name="rocket" size={30} color="#900" />
             <FlatList
               data={languages}
               renderItem={_renderLanguageRow.bind(this)}
