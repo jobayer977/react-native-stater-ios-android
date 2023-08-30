@@ -1,45 +1,59 @@
-import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text} from 'react-native';
+import {getAsyncStoreData, setAsyncStoreData} from '../utils/async-storage';
+import {setAppLanguage, setFontFamily} from '../redux/app.reducer';
 
-import AfterLoginStack from "./AfterLoginStack";
-import BeforeLoginStack from "./BeforeLoginStack";
-import EventEmitter from "react-native-eventemitter";
-import LoaderAnimation from "../components/LoaderAnimation";
-import { getLocalDate } from "../lib/app_prefs";
-import { useDispatch } from "react-redux";
+import BeforeLoginStack from './BeforeLoginStack';
+import RNRestart from 'react-native-restart';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {localizedStrings} from '../constants/localization';
+import {useDispatch} from 'react-redux';
+
 const navigatorTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: "transparent",
+    background: 'transparent',
   },
 };
-export const Routes = (): React.ReactElement => {
+const Routes = () => {
   const dispatch = useDispatch();
   const [appLoading, setAppLoading] = useState(false);
-  const [isDashboardStack, setIsDashboardStack] = useState(false);
-  useEffect(() => {
-    checkAppDashboardRedirection();
-    EventEmitter.on("STACK_CHANGE", (data) => {
-      setIsDashboardStack(data.isDashboardStack);
-    });
-  }, []);
-  const checkAppDashboardRedirection = async () => {
-    try {
-      setAppLoading(true);
-      const token = await getLocalDate("TOKEN");
-      if (token) {
-        setIsDashboardStack(true);
+  const init = async () => {
+    setAppLoading(true);
+    Promise.all([
+      await getAsyncStoreData('APP_FONT_FAMILY'),
+      await getAsyncStoreData('APP_LANGUAGE'),
+    ]).then(async values => {
+      const [fontFamily, language] = values;
+      if (!fontFamily || !language) {
+        console.log('hhhhh');
+        await setAsyncStoreData('APP_FONT_FAMILY', 'Inter');
+        await setAsyncStoreData('APP_LANGUAGE', 'en-US');
+        dispatch(setFontFamily('Inter'));
+        dispatch(setAppLanguage('en-US'));
+        localizedStrings.setLanguage('en-US');
+      }
+      if (fontFamily && language) {
+        dispatch(setFontFamily(fontFamily));
+        dispatch(setAppLanguage(language));
+        localizedStrings.setLanguage(language);
       }
       setAppLoading(false);
-    } catch (error) {
-      setAppLoading(false);
-    }
+    });
   };
+  useEffect(() => {
+    init();
+  }, []);
   return (
-    <NavigationContainer theme={navigatorTheme}>
-      {!appLoading && <BeforeLoginStack />}
-      {appLoading && <LoaderAnimation />}
-    </NavigationContainer>
+    <>
+      <NavigationContainer theme={navigatorTheme}>
+        <BeforeLoginStack />
+      </NavigationContainer>
+      {appLoading && <Text>Loading...</Text>}
+    </>
   );
 };
+export default Routes;
+const styles = StyleSheet.create({});

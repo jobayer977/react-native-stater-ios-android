@@ -1,4 +1,3 @@
 {
-  "conventionalCommits.scopes": ["UI", "theme", "Config"],
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "conventionalCommits.scopes": ["Init"]
 }

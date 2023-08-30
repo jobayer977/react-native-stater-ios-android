@@ -1,14 +1,6 @@
-import SplashScreenReducer, {
-  ISplashScreenReducer,
-} from "./SplashScreenReducer";
+import AppReducer from './app.reducer';
+import {configureStore} from '@reduxjs/toolkit';
 
-import { configureStore } from "@reduxjs/toolkit";
-
-export interface IRooReducers {
-  SplashScreenReducer: ISplashScreenReducer;
-}
 export const rootReducers = configureStore({
-  reducer: {
-    SplashScreenReducer: SplashScreenReducer,
-  },
+  reducer: {AppReducer},
 });
